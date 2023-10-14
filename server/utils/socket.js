@@ -4,6 +4,7 @@ import { updateMsgs } from "../controllers/msgController.js";
 const createRoom = async (socket, data) => {
   socket.join(data.room);
   const foundRoom = await createRoomDb(data);
+  console.log("foundRoom", foundRoom);
   socket.emit("found-room", foundRoom);
 };
 

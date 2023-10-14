@@ -19,10 +19,15 @@ const sendMsg = (socket, file, name, room, msg, setMsgs, setMsg, setFile) => {
     socket.emit("send-msg", { msg: reader.result, room, name, type: "file" });
     setMsgs((prev) => [...prev, `${name}: ${reader.result}`]);
   };
-  setFile((prev) => null);
+  setFile(null);
 };
 
 const populateMsgs = (data, setMsgs, setMembers) => {
+  console.log(data);
+  if (data.status === "ok") {
+    setMsgs(data.msgs);
+    setMembers(data.members);
+  }
   if (data.status === "invalid credentials") {
     setMsgs([data.status]);
     return;
@@ -35,8 +40,6 @@ const populateMsgs = (data, setMsgs, setMembers) => {
     setMsgs([data.status]);
     return;
   }
-  setMsgs(data.msgs);
-  setMembers(data.members);
 };
 
 const handleMsgs = (data, setMsgs) => {

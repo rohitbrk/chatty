@@ -1,4 +1,7 @@
 import Room from "../models/chat.model.js";
+import bcrypt from "bcrypt";
+
+const SALT_ROUNDS = 10;
 
 const findRoom = async (room) => {
   const foundRoom = await Room.findOne({ room: room }).populate().exec();
@@ -14,16 +17,20 @@ const auth = (room, name, password) => {
   const newMembers = room.members.map((item) => item["name"]);
 
   if (newMembers.includes(name)) {
+    const result = false;
     for (const member in room.members) {
-      if (
-        room.members[member].name === name &&
-        room.members[member].password === password
-      )
-        return true;
+      bcrypt.compare(
+        password,
+        room.members[member].password,
+        (err, response) => {
+          if (response) {
+            result = true;
+          }
+        }
+      );
     }
-    return false;
+    return result;
   }
-
   return true;
 };
 
@@ -33,17 +40,22 @@ const createRoomDb = async (data) => {
     return {
       status: "room already exists",
     };
-  const room = new Room({
-    room: data.room,
-    members: [{ name: data.name, password: data.password }],
+  const result = bcrypt.hash(data.password, SALT_ROUNDS, (err, hash) => {
+    if (err) console.log(err);
+    const room = new Room({
+      room: data.room,
+      members: [{ name: data.name, password: hash }],
+    });
+    room.save();
+    const newMembers = room.members.map((item) => item["name"]);
+    return {
+      room: room.room,
+      msgs: room.msgs,
+      members: newMembers,
+      status: "ok",
+    };
   });
-  room.save();
-  const newMembers = room.members.map((item) => item["name"]);
-  return {
-    room: room.room,
-    msgs: room.msgs,
-    members: newMembers,
-  };
+  console.log(result);
 };
 
 const joinRoomDb = async (data) => {
@@ -60,6 +72,7 @@ const joinRoomDb = async (data) => {
       room: foundRoom.room,
       msgs: foundRoom.msgs,
       members: newMembers,
+      status: "ok",
     };
 
   foundRoom.members.push({ name: data.name, password: data.password });
@@ -69,6 +82,7 @@ const joinRoomDb = async (data) => {
     room: foundRoom.room,
     msgs: foundRoom.msgs,
     members: newRoomMembers,
+    status: "ok",
   };
 };
 
