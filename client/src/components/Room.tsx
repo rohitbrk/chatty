@@ -4,6 +4,8 @@ const Room = ({
   socket,
   name,
   setName,
+  password,
+  setPassword,
   room,
   setRoom,
   createRoom,
@@ -15,8 +17,16 @@ const Room = ({
       <input
         type="text"
         value={name}
-        placeholder="Enter name"
-        onChange={(e) => setName((prev) => e.target.value)}
+        placeholder="Enter Name"
+        onChange={(e) => setName(e.target.value)}
+        className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      />
+      <br />
+      <input
+        type="password"
+        value={password}
+        placeholder="Enter Password"
+        onChange={(e) => setPassword(e.target.value)}
         className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <br />
@@ -24,14 +34,14 @@ const Room = ({
         type="text"
         placeholder="Enter Room name"
         value={room}
-        onChange={(e) => setRoom((prev) => e.target.value)}
+        onChange={(e) => setRoom(e.target.value)}
         className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <br />
       <div className="flex justify-evenly">
         <button
           onClick={() => {
-            createRoom(socket, name, room);
+            createRoom(socket, name, password, room);
             navigate("/chat");
           }}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded focus:outline-none focus:shadow-outline"
@@ -40,7 +50,7 @@ const Room = ({
         </button>
         <button
           onClick={() => {
-            joinRoom(socket, name, room);
+            joinRoom(socket, name, password, room);
             navigate("/chat");
           }}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded focus:outline-none focus:shadow-outline"

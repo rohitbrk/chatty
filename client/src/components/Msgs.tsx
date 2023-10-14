@@ -1,6 +1,7 @@
 const Msgs = ({ msgs }) => {
   return (
     <div className="flex flex-col w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
+      <div className="font-semibold pb-4">Messages</div>
       {msgs.map((item, index) => {
         const myArray = item.split(" ");
         if (item.includes("data:image/png;base64")) {

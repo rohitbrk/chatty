@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const roomSchema = new Schema({
   room: { type: String, required: true },
-  members: [String],
+  members: [{ name: String, password: String }],
   msgs: [String],
 });
 

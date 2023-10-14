@@ -1,9 +1,9 @@
-const createRoom = (socket, name, room) => {
-  socket.emit("create-room", { name, room });
+const createRoom = (socket, name, password, room) => {
+  socket.emit("create-room", { name, password, room });
 };
 
-const joinRoom = (socket, name, room) => {
-  socket.emit("join-room", { name, room });
+const joinRoom = (socket, name, password, room) => {
+  socket.emit("join-room", { name, password, room });
 };
 
 const sendMsg = (socket, file, name, room, msg, setMsgs, setMsg, setFile) => {
@@ -23,6 +23,7 @@ const sendMsg = (socket, file, name, room, msg, setMsgs, setMsg, setFile) => {
 };
 
 const populateMsgs = (data, setMsgs, setMembers) => {
+  console.log(data);
   if (data.status === "room not found") {
     setMsgs((prev) => ["Room not found."]);
     return;

@@ -5,8 +5,7 @@ const Members = ({ members }) => {
   return (
     <div className="flex flex-col w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
       <div className="flex justify-between font-semibold">
-        {" "}
-        Members:
+        Members
         {showMembers ? (
           <button onClick={() => setShowMembers((prev) => !prev)}>
             <svg

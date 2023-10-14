@@ -19,6 +19,8 @@ const App = () => {
   const URL = "http://localhost:8000/";
 
   const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+
   const [room, setRoom] = useState("");
   const [msg, setMsg] = useState("");
   const [file, setFile] = useState(null);
@@ -47,13 +49,15 @@ const App = () => {
                 socket={socket}
                 name={name}
                 setName={setName}
+                password={password}
+                setPassword={setPassword}
                 room={room}
                 setRoom={setRoom}
                 createRoom={() => {
-                  createRoom(socket, name, room);
+                  createRoom(socket, name, password, room);
                 }}
                 joinRoom={() => {
-                  joinRoom(socket, name, room);
+                  joinRoom(socket, name, password, room);
                 }}
               />
             }

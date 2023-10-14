@@ -8,21 +8,39 @@ const createRoomDb = async (data) => {
     };
   const room = new Room({
     room: data.room,
-    members: [data.name],
+    members: [{ name: data.name, password: data.password }],
   });
   room.save();
-  return room;
+  const newMembers = room.members.map((item) => item["name"]);
+  return {
+    room: room.room,
+    msgs: room.msgs,
+    members: newMembers,
+  };
 };
 
 const joinRoomDb = async (data) => {
   const foundRoom = await findRoom(data.room);
+  console.log(foundRoom);
   if (foundRoom) {
-    if (foundRoom.members.includes(data.name)) {
-      return foundRoom;
-    }
-    foundRoom.members.push(data.name);
+    const newMembers = foundRoom.members.map((item) => item["name"]);
+    console.log(newMembers);
+    if (newMembers.includes(data.name))
+      return {
+        room: foundRoom.room,
+        msgs: foundRoom.msgs,
+        members: newMembers,
+      };
+
+    foundRoom.members.push({ name: data.name, password: data.password });
     await foundRoom.save();
-    return foundRoom;
+    const newRoom = await findRoom(data.room);
+    const newRoomMembers = newRoom.members.map((item) => item["name"]);
+    return {
+      room: newRoom.room,
+      msgs: newRoom.msgs,
+      members: newRoomMembers,
+    };
   }
   return { status: "room not found" };
 };
