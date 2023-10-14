@@ -21,10 +21,8 @@ const createRoomDb = async (data) => {
 
 const joinRoomDb = async (data) => {
   const foundRoom = await findRoom(data.room);
-  console.log(foundRoom);
   if (foundRoom) {
     const newMembers = foundRoom.members.map((item) => item["name"]);
-    console.log(newMembers);
     if (newMembers.includes(data.name))
       return {
         room: foundRoom.room,
@@ -34,11 +32,10 @@ const joinRoomDb = async (data) => {
 
     foundRoom.members.push({ name: data.name, password: data.password });
     await foundRoom.save();
-    const newRoom = await findRoom(data.room);
-    const newRoomMembers = newRoom.members.map((item) => item["name"]);
+    const newRoomMembers = foundRoom.members.map((item) => item["name"]);
     return {
-      room: newRoom.room,
-      msgs: newRoom.msgs,
+      room: foundRoom.room,
+      msgs: foundRoom.msgs,
       members: newRoomMembers,
     };
   }

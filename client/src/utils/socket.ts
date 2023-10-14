@@ -23,7 +23,6 @@ const sendMsg = (socket, file, name, room, msg, setMsgs, setMsg, setFile) => {
 };
 
 const populateMsgs = (data, setMsgs, setMembers) => {
-  console.log(data);
   if (data.status === "room not found") {
     setMsgs((prev) => ["Room not found."]);
     return;

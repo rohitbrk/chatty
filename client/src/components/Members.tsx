@@ -1,6 +1,8 @@
 import { useState } from "react";
 
-const Members = ({ members }) => {
+type MembersProps = { members: String[] };
+
+const Members = ({ members }: MembersProps) => {
   const [showMembers, setShowMembers] = useState(false);
   return (
     <div className="flex flex-col w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
@@ -40,9 +42,9 @@ const Members = ({ members }) => {
       </div>
       <>
         {showMembers
-          ? members.map((item, index) => (
+          ? members.map((item) => (
               <li
-                key={index}
+                key={item}
                 className="text-4xl font-medium leading-tight inline-block whitespace-nowrap rounded-1 bg-primary-100 text-center align-baseline font-bold leading-none text-primary-700"
               >
                 {item}
