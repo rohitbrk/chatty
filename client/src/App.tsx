@@ -89,7 +89,7 @@ const App = () => {
                   deleteRoom={() => deleteRoom(URL, room, setMsgs)}
                 />
                 <Members members={members} />
-                <Msgs msgs={msgs} />
+                <Msgs name={name} msgs={msgs} />
               </>
             }
           />
