@@ -1,5 +1,32 @@
 import Room from "../models/chat.model.js";
 
+const findRoom = async (room) => {
+  const foundRoom = await Room.findOne({ room: room }).populate().exec();
+  return foundRoom;
+};
+
+const deleteRoom = async (room) => {
+  const response = await Room.findOneAndDelete({ room: room });
+  if (response) return { status: "ok" };
+};
+
+const auth = (room, name, password) => {
+  const newMembers = room.members.map((item) => item["name"]);
+
+  if (newMembers.includes(name)) {
+    for (const member in room.members) {
+      if (
+        room.members[member].name === name &&
+        room.members[member].password === password
+      )
+        return true;
+    }
+    return false;
+  }
+
+  return true;
+};
+
 const createRoomDb = async (data) => {
   const foundRoom = await findRoom(data.room);
   if (foundRoom)
@@ -21,35 +48,28 @@ const createRoomDb = async (data) => {
 
 const joinRoomDb = async (data) => {
   const foundRoom = await findRoom(data.room);
-  if (foundRoom) {
-    const newMembers = foundRoom.members.map((item) => item["name"]);
-    if (newMembers.includes(data.name))
-      return {
-        room: foundRoom.room,
-        msgs: foundRoom.msgs,
-        members: newMembers,
-      };
 
-    foundRoom.members.push({ name: data.name, password: data.password });
-    await foundRoom.save();
-    const newRoomMembers = foundRoom.members.map((item) => item["name"]);
+  if (!foundRoom) return { status: "room not found" };
+
+  const ans = auth(foundRoom, data.name, data.password);
+  if (!ans) return { status: "invalid credentials" };
+
+  const newMembers = foundRoom.members.map((item) => item["name"]);
+  if (newMembers.includes(data.name))
     return {
       room: foundRoom.room,
       msgs: foundRoom.msgs,
-      members: newRoomMembers,
+      members: newMembers,
     };
-  }
-  return { status: "room not found" };
-};
 
-const findRoom = async (room) => {
-  const foundRoom = await Room.findOne({ room: room }).populate().exec();
-  return foundRoom;
-};
-
-const deleteRoom = async (room) => {
-  const response = await Room.findOneAndDelete({ room: room });
-  return { status: "ok" };
+  foundRoom.members.push({ name: data.name, password: data.password });
+  await foundRoom.save();
+  const newRoomMembers = foundRoom.members.map((item) => item["name"]);
+  return {
+    room: foundRoom.room,
+    msgs: foundRoom.msgs,
+    members: newRoomMembers,
+  };
 };
 
 export { createRoomDb, joinRoomDb, findRoom, deleteRoom };

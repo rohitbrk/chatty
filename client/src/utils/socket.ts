@@ -23,16 +23,20 @@ const sendMsg = (socket, file, name, room, msg, setMsgs, setMsg, setFile) => {
 };
 
 const populateMsgs = (data, setMsgs, setMembers) => {
+  if (data.status === "invalid credentials") {
+    setMsgs([data.status]);
+    return;
+  }
   if (data.status === "room not found") {
-    setMsgs((prev) => ["Room not found."]);
+    setMsgs([data.status]);
     return;
   }
   if (data.status === "room already exists") {
-    setMsgs((prev) => ["Room already exists. Please choose another name."]);
+    setMsgs([data.status]);
     return;
   }
-  setMsgs((prev) => [...data.msgs]);
-  setMembers((prev) => [...data.members]);
+  setMsgs(data.msgs);
+  setMembers(data.members);
 };
 
 const handleMsgs = (data, setMsgs) => {
