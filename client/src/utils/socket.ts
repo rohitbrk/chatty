@@ -10,7 +10,7 @@ const sendMsg = (socket, file, name, room, msg, setMsgs, setMsg, setFile) => {
   if (msg) {
     socket.emit("send-msg", { name, room, msg });
     setMsgs((prev) => [...prev, `${name}: ${msg}`]);
-    setMsg((prev) => "");
+    setMsg("");
     return;
   }
   const reader = new FileReader();
@@ -19,15 +19,10 @@ const sendMsg = (socket, file, name, room, msg, setMsgs, setMsg, setFile) => {
     socket.emit("send-msg", { msg: reader.result, room, name, type: "file" });
     setMsgs((prev) => [...prev, `${name}: ${reader.result}`]);
   };
-  setFile(null);
+  setFile((prev) => null);
 };
 
 const populateMsgs = (data, setMsgs, setMembers) => {
-  console.log(data);
-  if (data.status === "ok") {
-    setMsgs(data.msgs);
-    setMembers(data.members);
-  }
   if (data.status === "invalid credentials") {
     setMsgs([data.status]);
     return;
@@ -39,6 +34,10 @@ const populateMsgs = (data, setMsgs, setMembers) => {
   if (data.status === "room already exists") {
     setMsgs([data.status]);
     return;
+  }
+  if (data.status === "ok") {
+    setMsgs(data.msgs);
+    setMembers(data.members);
   }
 };
 

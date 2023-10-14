@@ -17,17 +17,10 @@ const auth = (room, name, password) => {
   const newMembers = room.members.map((item) => item["name"]);
 
   if (newMembers.includes(name)) {
-    const result = false;
+    let result;
     for (const member in room.members) {
-      bcrypt.compare(
-        password,
-        room.members[member].password,
-        (err, response) => {
-          if (response) {
-            result = true;
-          }
-        }
-      );
+      if (name === room.members[member].name)
+        result = bcrypt.compareSync(password, room.members[member].password);
     }
     return result;
   }
@@ -40,22 +33,21 @@ const createRoomDb = async (data) => {
     return {
       status: "room already exists",
     };
-  const result = bcrypt.hash(data.password, SALT_ROUNDS, (err, hash) => {
-    if (err) console.log(err);
-    const room = new Room({
-      room: data.room,
-      members: [{ name: data.name, password: hash }],
-    });
-    room.save();
-    const newMembers = room.members.map((item) => item["name"]);
-    return {
-      room: room.room,
-      msgs: room.msgs,
-      members: newMembers,
-      status: "ok",
-    };
+
+  const hash = bcrypt.hashSync(data.password, SALT_ROUNDS);
+
+  const room = new Room({
+    room: data.room,
+    members: [{ name: data.name, password: hash }],
   });
-  console.log(result);
+  room.save();
+  const newMembers = room.members.map((item) => item["name"]);
+  return {
+    room: room.room,
+    msgs: room.msgs,
+    members: newMembers,
+    status: "ok",
+  };
 };
 
 const joinRoomDb = async (data) => {
@@ -74,8 +66,9 @@ const joinRoomDb = async (data) => {
       members: newMembers,
       status: "ok",
     };
+  const hash = bcrypt.hashSync(data.password, SALT_ROUNDS);
 
-  foundRoom.members.push({ name: data.name, password: data.password });
+  foundRoom.members.push({ name: data.name, password: hash });
   await foundRoom.save();
   const newRoomMembers = foundRoom.members.map((item) => item["name"]);
   return {
