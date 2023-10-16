@@ -1,12 +1,21 @@
-const createRoom = (socket, name, password, room) => {
+const createRoom = (socket, name: string, password: string, room: string) => {
   socket.emit("create-room", { name, password, room });
 };
 
-const joinRoom = (socket, name, password, room) => {
+const joinRoom = (socket, name: string, password: string, room: string) => {
   socket.emit("join-room", { name, password, room });
 };
 
-const sendMsg = (socket, file, name, room, msg, setMsgs, setMsg, setFile) => {
+const sendMsg = (
+  socket,
+  file,
+  name: string,
+  room: string,
+  msg: string,
+  setMsgs,
+  setMsg,
+  setFile
+) => {
   if (msg) {
     socket.emit("send-msg", { name, room, msg });
     setMsgs((prev) => [...prev, `${name}: ${msg}`]);
@@ -45,7 +54,7 @@ const handleMsgs = (data, setMsgs) => {
   setMsgs((prev) => [...prev, `${data.name}: ${data.msg}`]);
 };
 
-const deleteRoom = async (URL, room, setMsgs) => {
+const deleteRoom = async (URL: string, room: string, setMsgs) => {
   const response = await fetch(URL + `room/${room}`, { method: "DELETE" });
   const data = await response.json();
   if (data.status === "ok") {

@@ -14,6 +14,7 @@ import {
   handleMsgs,
   deleteRoom,
 } from "./utils/socket.js";
+import Info from "./components/Info.js";
 
 const App = () => {
   const URL = "http://localhost:8000/";
@@ -66,6 +67,14 @@ const App = () => {
             path="chat"
             element={
               <>
+                <Info
+                  name={name}
+                  URL={URL}
+                  room={room}
+                  setMsgs={setMsgs}
+                  deleteRoom={deleteRoom}
+                />
+                <Msgs name={name} msgs={msgs} />
                 <Chat
                   name={name}
                   msg={msg}
@@ -89,7 +98,6 @@ const App = () => {
                   deleteRoom={() => deleteRoom(URL, room, setMsgs)}
                 />
                 <Members members={members} />
-                <Msgs name={name} msgs={msgs} />
               </>
             }
           />

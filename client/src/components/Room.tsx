@@ -1,5 +1,27 @@
 import { useCusNavigate } from "../hooks/useCusNavigate";
 
+type AppProps = {
+  socket: null;
+  name: string;
+  setName: (name: string) => void;
+  password: string;
+  setPassword: (password: string) => void;
+  room: string;
+  setRoom: (room: string) => void;
+  createRoom: (
+    socket: null,
+    name: string,
+    password: string,
+    room: string
+  ) => void;
+  joinRoom: (
+    socket: null,
+    name: string,
+    password: string,
+    room: string
+  ) => void;
+};
+
 const Room = ({
   socket,
   name,
@@ -10,7 +32,7 @@ const Room = ({
   setRoom,
   createRoom,
   joinRoom,
-}) => {
+}: AppProps) => {
   const navigate = useCusNavigate();
   return (
     <div className="w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
