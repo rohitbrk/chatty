@@ -1,8 +1,16 @@
 const createRoom = (socket, name: string, password: string, room: string) => {
+  if (!name || !password || !room) {
+    window.alert("Please enter details");
+    return;
+  }
   socket.emit("create-room", { name, password, room });
 };
 
 const joinRoom = (socket, name: string, password: string, room: string) => {
+  if (!name || !password || !room) {
+    window.alert("Please enter details");
+    return;
+  }
   socket.emit("join-room", { name, password, room });
 };
 

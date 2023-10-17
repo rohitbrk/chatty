@@ -17,7 +17,7 @@ import {
 import Info from "./components/Info.js";
 
 const App = () => {
-  const URL = "http://localhost:8000/";
+  const URL = import.meta.env.VITE_BACKEND_URL;
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");

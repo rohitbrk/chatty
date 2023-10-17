@@ -10,6 +10,7 @@ const Msgs = ({ name, msgs }: MsgsProps) => {
       {msgs.map((item, index) => {
         if (!item.includes(":")) return item;
         const myArray = item.split(" ");
+        const myMsgString = item.substring(item.indexOf(":") + 1);
         let flag = false;
         if (name === myArray[0].slice(0, -1)) flag = true;
 
@@ -79,7 +80,7 @@ const Msgs = ({ name, msgs }: MsgsProps) => {
                     {myArray[0].slice(0, -1)}
                   </span>
                 )}
-                <p className="ml-4">{myArray[1]}</p>
+                <p className="ml-4">{myMsgString}</p>
               </div>
             </div>
           </div>
