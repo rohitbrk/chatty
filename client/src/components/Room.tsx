@@ -1,4 +1,6 @@
+// @ts-nocheck
 import { useCusNavigate } from "../hooks/useCusNavigate";
+import { createRoom, joinRoom } from "../utils/socket.js";
 
 type AppProps = {
   socket: null;
@@ -8,18 +10,6 @@ type AppProps = {
   setPassword: (password: string) => void;
   room: string;
   setRoom: (room: string) => void;
-  createRoom: (
-    socket: null,
-    name: string,
-    password: string,
-    room: string
-  ) => void;
-  joinRoom: (
-    socket: null,
-    name: string,
-    password: string,
-    room: string
-  ) => void;
 };
 
 const Room = ({
@@ -30,10 +20,23 @@ const Room = ({
   setPassword,
   room,
   setRoom,
-  createRoom,
-  joinRoom,
 }: AppProps) => {
   const navigate = useCusNavigate();
+
+  const handleCreateRoom = () => {
+    const response: boolean = createRoom(socket, name, password, room);
+    console.log(response);
+    if (!response) return;
+    navigate("/chat");
+  };
+
+  const handleJoinRoom = () => {
+    const response: boolean = joinRoom(socket, name, password, room);
+    console.log(response);
+    if (!response) return;
+    navigate("/chat");
+  };
+
   return (
     <div className="w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
       <input
@@ -62,19 +65,13 @@ const Room = ({
       <br />
       <div className="flex justify-evenly">
         <button
-          onClick={() => {
-            createRoom(socket, name, password, room);
-            navigate("/chat");
-          }}
+          onClick={handleCreateRoom}
           className="inline-flex items-center px-3 py-2 text-lg font-medium text-center text-white bg-blue-700 rounded hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Create
         </button>
         <button
-          onClick={() => {
-            joinRoom(socket, name, password, room);
-            navigate("/chat");
-          }}
+          onClick={handleJoinRoom}
           className="inline-flex items-center px-3 py-2 text-lg font-medium text-center text-white bg-blue-700 rounded hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         >
           Join

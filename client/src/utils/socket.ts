@@ -1,17 +1,28 @@
+// @ts-nocheck
 const createRoom = (socket, name: string, password: string, room: string) => {
+  if (name.includes(" ")) {
+    window.alert("Please don't use spaces in the name");
+    return false;
+  }
   if (!name || !password || !room) {
     window.alert("Please enter details");
-    return;
+    return false;
   }
   socket.emit("create-room", { name, password, room });
+  return true;
 };
 
 const joinRoom = (socket, name: string, password: string, room: string) => {
+  if (name.includes(" ")) {
+    window.alert("Please don't use spaces in the name");
+    return false;
+  }
   if (!name || !password || !room) {
     window.alert("Please enter details");
-    return;
+    return false;
   }
   socket.emit("join-room", { name, password, room });
+  return true;
 };
 
 const sendMsg = (

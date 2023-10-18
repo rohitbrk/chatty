@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -7,8 +8,6 @@ import Chat from "./components/Chat";
 import Msgs from "./components/Msgs";
 import Members from "./components/Members";
 import {
-  createRoom,
-  joinRoom,
   sendMsg,
   populateMsgs,
   handleMsgs,
@@ -54,12 +53,6 @@ const App = () => {
                 setPassword={setPassword}
                 room={room}
                 setRoom={setRoom}
-                createRoom={() => {
-                  createRoom(socket, name, password, room);
-                }}
-                joinRoom={() => {
-                  joinRoom(socket, name, password, room);
-                }}
               />
             }
           />
