@@ -51,22 +51,12 @@ const sendMsg = (
 };
 
 const populateMsgs = (data, setMsgs, setMembers) => {
-  if (data.status === "invalid credentials") {
-    setMsgs([data.status]);
-    return;
-  }
-  if (data.status === "room not found") {
-    setMsgs([data.status]);
-    return;
-  }
-  if (data.status === "room already exists") {
-    setMsgs([data.status]);
-    return;
-  }
   if (data.status === "ok") {
     setMsgs(data.msgs);
     setMembers(data.members);
+    return;
   }
+  setMsgs([data.status]);
 };
 
 const handleMsgs = (data, setMsgs) => {
@@ -76,6 +66,7 @@ const handleMsgs = (data, setMsgs) => {
 const deleteRoom = async (URL: string, room: string, setMsgs) => {
   const response = await fetch(URL + `room/${room}`, { method: "DELETE" });
   const data = await response.json();
+  console.log(data);
   if (data.status === "ok") {
     setMsgs([]);
   }

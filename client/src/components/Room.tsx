@@ -25,14 +25,12 @@ const Room = ({
 
   const handleCreateRoom = () => {
     const response: boolean = createRoom(socket, name, password, room);
-    console.log(response);
     if (!response) return;
     navigate("/chat");
   };
 
   const handleJoinRoom = () => {
     const response: boolean = joinRoom(socket, name, password, room);
-    console.log(response);
     if (!response) return;
     navigate("/chat");
   };

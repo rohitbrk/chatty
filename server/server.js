@@ -6,7 +6,7 @@ import { connectDb } from "./config/db.js";
 import { router as room } from "./routes/room.js";
 import { createRoom, joinRoom, sendMsg } from "./utils/socket.js";
 
-const PORT = 8000;
+const PORT = 8080;
 const app = express();
 app.use(cors());
 
