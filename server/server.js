@@ -28,7 +28,7 @@ const io = new Server(httpServer, {
 
 io.on("connection", (socket) => {
   socket.on("create-room", (data) => createRoom(socket, data));
-  socket.on("join-room", (data) => joinRoom(io, socket, data));
+  socket.on("join-room", (data) => joinRoom(socket, data));
   socket.on("send-msg", (data) => sendMsg(socket, data));
 });
 

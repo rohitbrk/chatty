@@ -1,15 +1,26 @@
 import { useState } from "react";
+import { getMembers } from "../utils/socket";
 
-type MembersProps = { members: String[] };
+type MembersProps = {
+  members: String[];
+  URL: string;
+  room: string;
+  setMembers: string[];
+};
 
-const Members = ({ members }: MembersProps) => {
+const Members = ({ members, URL, room, setMembers }: MembersProps) => {
   const [showMembers, setShowMembers] = useState(false);
   return (
     <div className="flex flex-col w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
       <div className="flex justify-between font-semibold">
         Members
         {showMembers ? (
-          <button onClick={() => setShowMembers((prev) => !prev)}>
+          <button
+            onClick={() => {
+              setShowMembers((prev) => !prev);
+              getMembers(URL, room, setMembers);
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"

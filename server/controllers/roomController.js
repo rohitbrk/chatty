@@ -4,12 +4,13 @@ import bcrypt from "bcrypt";
 
 const SALT_ROUNDS = 10;
 
-const findRoom = async (req, res) => {
+const findRoomMembers = async (req, res) => {
   try {
     const foundRoom = await Room.findOne({ room: req.params.room })
       .populate()
       .exec();
-    res.status(200).json(foundRoom);
+    const members = foundRoom.members.map((member) => member.name);
+    res.status(200).json({ members });
   } catch (err) {
     res.status(500).json({ status: "error", message: "Error retrieving data" });
   }
@@ -88,4 +89,4 @@ const joinRoomDb = async (data) => {
   }
 };
 
-export { createRoomDb, joinRoomDb, findRoom, deleteRoom };
+export { createRoomDb, joinRoomDb, findRoomMembers, deleteRoom };

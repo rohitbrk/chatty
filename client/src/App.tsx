@@ -33,8 +33,12 @@ const App = () => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on("found-room", (data) => populateMsgs(data, setMsgs, setMembers));
-    socket.on("receive-msg", (data) => handleMsgs(data, setMsgs));
+    socket.on("found-room", (data) =>
+      populateMsgs(data, setMsgs, setMembers, URL)
+    );
+    socket.on("receive-msg", (data) =>
+      handleMsgs(data, setMsgs, members, setMembers)
+    );
   }, [socket]);
 
   return (
@@ -104,7 +108,12 @@ const App = () => {
                     )
                   }
                 />
-                <Members members={members} />
+                <Members
+                  members={members}
+                  URL={URL}
+                  room={room}
+                  setMembers={setMembers}
+                />
               </>
             }
           />

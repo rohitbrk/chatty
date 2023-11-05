@@ -50,7 +50,14 @@ const sendMsg = (
   setFile((prev) => null);
 };
 
-const populateMsgs = (data, setMsgs, setMembers) => {
+const getMembers = async (URL, room, setMembers) => {
+  console.log(URL + `room/${room}`);
+  const response = await fetch(URL + `room/${room}`);
+  const data = await response.json();
+  setMembers(data.members);
+};
+
+const populateMsgs = (data, setMsgs, setMembers, URL) => {
   if (data.status === "ok") {
     setMsgs(data.msgs);
     setMembers(data.members);
@@ -59,7 +66,7 @@ const populateMsgs = (data, setMsgs, setMembers) => {
   setMsgs([data.status]);
 };
 
-const handleMsgs = (data, setMsgs) => {
+const handleMsgs = (data, setMsgs, members, setMembers) => {
   setMsgs((prev) => [...prev, `${data.name}: ${data.msg}`]);
 };
 
@@ -89,4 +96,12 @@ const deleteRoom = async (
   }
 };
 
-export { createRoom, joinRoom, sendMsg, populateMsgs, handleMsgs, deleteRoom };
+export {
+  createRoom,
+  joinRoom,
+  sendMsg,
+  populateMsgs,
+  handleMsgs,
+  deleteRoom,
+  getMembers,
+};

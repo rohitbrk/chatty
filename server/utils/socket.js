@@ -7,10 +7,10 @@ const createRoom = async (socket, data) => {
   socket.emit("found-room", foundRoom);
 };
 
-const joinRoom = async (io, socket, data) => {
+const joinRoom = async (socket, data) => {
   socket.join(data.room);
   const foundRoom = await joinRoomDb(data);
-  io.in(data.room).emit("found-room", foundRoom);
+  socket.emit("found-room", foundRoom);
 };
 
 const sendMsg = (socket, data) => {
