@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+
 const auth = (room, name, password) => {
   const newMembers = room.members.map((item) => item["name"]);
 

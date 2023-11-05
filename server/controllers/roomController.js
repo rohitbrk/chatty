@@ -80,6 +80,7 @@ const joinRoomDb = async (data) => {
       status: "ok",
     };
   } catch (err) {
+    console.log(err.message);
     return { status: "error" };
   }
 };

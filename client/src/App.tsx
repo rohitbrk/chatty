@@ -13,7 +13,7 @@ import {
   handleMsgs,
   deleteRoom,
 } from "./utils/socket.js";
-import Info from "./components/Info.js";
+import Profile from "./components/Profile";
 
 const App = () => {
   const URL = import.meta.env.VITE_BACKEND_URL;
@@ -60,7 +60,7 @@ const App = () => {
             path="chat"
             element={
               <>
-                <Info
+                <Profile
                   name={name}
                   URL={URL}
                   room={room}

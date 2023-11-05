@@ -20,7 +20,7 @@ const Msgs = ({ name, msgs }: MsgsProps) => {
               {flag ? (
                 ""
               ) : (
-                <span className="m-0 text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm text-center px-4 py-1 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                <span className="m-0 text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm text-center px-4 py-1">
                   {myArray[0].slice(0, -1)}
                 </span>
               )}
@@ -41,7 +41,7 @@ const Msgs = ({ name, msgs }: MsgsProps) => {
               {flag ? (
                 ""
               ) : (
-                <span className="m-0 text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm text-center px-4 py-1 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                <span className="m-0 text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm text-center px-4 py-1">
                   {myArray[0].slice(0, -1)}
                 </span>
               )}
@@ -76,7 +76,7 @@ const Msgs = ({ name, msgs }: MsgsProps) => {
                 {flag ? (
                   ""
                 ) : (
-                  <span className="m-0 text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm text-center px-4 py-1 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                  <span className="m-0 text-white bg-gray-700 hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm text-center px-4 py-1">
                     {myArray[0].slice(0, -1)}
                   </span>
                 )}
