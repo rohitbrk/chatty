@@ -63,12 +63,29 @@ const handleMsgs = (data, setMsgs) => {
   setMsgs((prev) => [...prev, `${data.name}: ${data.msg}`]);
 };
 
-const deleteRoom = async (URL: string, room: string, setMsgs) => {
-  const response = await fetch(URL + `room/${room}`, { method: "DELETE" });
+const deleteRoom = async (
+  name: string,
+  password: string,
+  room: string,
+  URL: string,
+  setMsgs,
+  setName,
+  setPassword,
+  setRoom
+) => {
+  const response = await fetch(URL + `room`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ name, password, room }),
+  });
   const data = await response.json();
-  console.log(data);
   if (data.status === "ok") {
     setMsgs([]);
+    setName("");
+    setPassword("");
+    setRoom("");
   }
 };
 

@@ -20,7 +20,6 @@ const App = () => {
 
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-
   const [room, setRoom] = useState("");
   const [msg, setMsg] = useState("");
   const [file, setFile] = useState(null);
@@ -62,10 +61,14 @@ const App = () => {
               <>
                 <Profile
                   name={name}
-                  URL={URL}
+                  password={password}
                   room={room}
+                  URL={URL}
                   setMsgs={setMsgs}
                   deleteRoom={deleteRoom}
+                  setName={setName}
+                  setPassword={setPassword}
+                  setRoom={setRoom}
                 />
                 <Msgs name={name} msgs={msgs} />
                 <Chat
@@ -88,7 +91,18 @@ const App = () => {
                   URL={URL}
                   room={room}
                   setMsgs={setMsgs}
-                  deleteRoom={() => deleteRoom(URL, room, setMsgs)}
+                  deleteRoom={() =>
+                    deleteRoom(
+                      name,
+                      password,
+                      room,
+                      URL,
+                      setMsgs,
+                      setName,
+                      setPassword,
+                      setRoom
+                    )
+                  }
                 />
                 <Members members={members} />
               </>

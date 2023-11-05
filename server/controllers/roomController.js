@@ -17,7 +17,11 @@ const findRoom = async (req, res) => {
 
 const deleteRoom = async (req, res) => {
   try {
-    const response = await Room.findOneAndDelete({ room: req.params.room });
+    const { name, password, room } = req.body;
+    const foundRoom = await Room.findOne({ room: room }).populate().exec();
+    const iseVerified = auth(foundRoom, name, password);
+    if (!iseVerified) return res.status(401).json({ status: "error" });
+    const response = await Room.findOneAndDelete({ room: room });
     if (response) res.status(200).json({ status: "ok" });
   } catch (err) {
     res.status(500).json({ status: "error", message: "Error retrieving data" });
@@ -57,8 +61,8 @@ const joinRoomDb = async (data) => {
 
     if (!foundRoom) return { status: "room not found" };
 
-    const ans = auth(foundRoom, data.name, data.password);
-    if (!ans) return { status: "invalid credentials" };
+    const iseVerified = auth(foundRoom, data.name, data.password);
+    if (!iseVerified) return { status: "invalid credentials" };
 
     const newMembers = foundRoom.members.map((item) => item["name"]);
     if (newMembers.includes(data.name))
@@ -80,7 +84,6 @@ const joinRoomDb = async (data) => {
       status: "ok",
     };
   } catch (err) {
-    console.log(err.message);
     return { status: "error" };
   }
 };

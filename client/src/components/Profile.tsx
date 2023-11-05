@@ -3,17 +3,36 @@ import { useCusNavigate } from "../hooks/useCusNavigate";
 
 type ProfileProps = {
   name: string;
-  URL: string;
+  password: string;
   room: string;
+  URL: string;
   setMsgs: (msgs: string[]) => void;
+  setName: (name: string) => void;
+  setPassword: (password: string) => void;
+  setRoom: (room: string) => void;
   deleteRoom: (
-    URL: string,
+    name: string,
+    password: string,
     room: string,
-    setMsgs: (msgs: string[]) => void
+    URL: string,
+    setMsgs: (msgs: string[]) => void,
+    setName: (name: string) => void,
+    setPassword: (password: string) => void,
+    setRoom: (room: string) => void
   ) => void;
 };
 
-const Profile = ({ name, URL, room, setMsgs, deleteRoom }: ProfileProps) => {
+const Profile = ({
+  name,
+  password,
+  room,
+  URL,
+  setMsgs,
+  deleteRoom,
+  setName,
+  setPassword,
+  setRoom,
+}: ProfileProps) => {
   const navigate = useCusNavigate();
   const [dropdown, setDropdown] = useState(false);
   const dropdownElements = [
@@ -27,7 +46,16 @@ const Profile = ({ name, URL, room, setMsgs, deleteRoom }: ProfileProps) => {
     {
       name: "Delete Room",
       onClick: () => {
-        deleteRoom(URL, room, setMsgs);
+        deleteRoom(
+          name,
+          password,
+          room,
+          URL,
+          setMsgs,
+          setName,
+          setPassword,
+          setRoom
+        );
         navigate("/");
       },
     },
