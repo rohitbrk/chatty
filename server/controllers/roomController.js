@@ -1,16 +1,14 @@
-import { auth } from "../middleware/auth.js";
+import { createToken } from "../middleware/jwt.js";
+import { createHash, verifyLogin } from "../middleware/auth.js";
 import Room from "../models/chat.model.js";
-import bcrypt from "bcrypt";
-
-const SALT_ROUNDS = 10;
 
 const findRoomMembers = async (req, res) => {
   try {
-    const foundRoom = await Room.findOne({ room: req.params.room })
+    const foundRoom = await Room.findOne({ room: req.user.room })
       .populate()
       .exec();
     const members = foundRoom.members.map((member) => member.name);
-    res.status(200).json({ members });
+    res.status(200).json({ status: "ok", members });
   } catch (err) {
     res.status(500).json({ status: "error", message: "Error retrieving data" });
   }
@@ -18,12 +16,10 @@ const findRoomMembers = async (req, res) => {
 
 const deleteRoom = async (req, res) => {
   try {
-    const { name, password, room } = req.body;
-    const foundRoom = await Room.findOne({ room: room }).populate().exec();
-    const iseVerified = auth(foundRoom, name, password);
-    if (!iseVerified) return res.status(401).json({ status: "error" });
+    const { room } = req.user;
     const response = await Room.findOneAndDelete({ room: room });
-    if (response) res.status(200).json({ status: "ok" });
+    if (response) return res.status(200).json({ status: "ok" });
+    res.status(401).json({ status: "error" });
   } catch (err) {
     res.status(500).json({ status: "error", message: "Error retrieving data" });
   }
@@ -37,18 +33,20 @@ const createRoomDb = async (data) => {
         status: "room already exists",
       };
 
-    const hash = bcrypt.hashSync(data.password, SALT_ROUNDS);
+    const hash = createHash(data.password);
 
     const room = new Room({
       room: data.room,
       members: [{ name: data.name, password: hash }],
+      msgs: [],
     });
     room.save();
-    const newMembers = room.members.map((item) => item["name"]);
+
+    const token = createToken(data.name, data.room);
     return {
       room: room.room,
       msgs: room.msgs,
-      members: newMembers,
+      token,
       status: "ok",
     };
   } catch (err) {
@@ -59,29 +57,23 @@ const createRoomDb = async (data) => {
 const joinRoomDb = async (data) => {
   try {
     const foundRoom = await Room.findOne({ room: data.room }).populate().exec();
-
     if (!foundRoom) return { status: "room not found" };
 
-    const iseVerified = auth(foundRoom, data.name, data.password);
-    if (!iseVerified) return { status: "invalid credentials" };
+    const isVerified = verifyLogin(foundRoom, data.name, data.password);
+    if (!isVerified) return { status: "invalid credentials" };
 
-    const newMembers = foundRoom.members.map((item) => item["name"]);
-    if (newMembers.includes(data.name))
-      return {
-        room: foundRoom.room,
-        msgs: foundRoom.msgs,
-        members: newMembers,
-        status: "ok",
-      };
-    const hash = bcrypt.hashSync(data.password, SALT_ROUNDS);
+    const token = createToken(data.name, data.room);
+    const hash = createHash(data.password);
 
-    foundRoom.members.push({ name: data.name, password: hash });
+    const members = foundRoom.members.map((item) => item["name"]);
+    if (!members.includes(data.name))
+      foundRoom.members.push({ name: data.name, password: hash });
+
     await foundRoom.save();
-    const newRoomMembers = foundRoom.members.map((item) => item["name"]);
     return {
       room: foundRoom.room,
       msgs: foundRoom.msgs,
-      members: newRoomMembers,
+      token,
       status: "ok",
     };
   } catch (err) {

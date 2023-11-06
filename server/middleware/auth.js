@@ -1,6 +1,13 @@
 import bcrypt from "bcrypt";
 
-const auth = (room, name, password) => {
+const SALT_ROUNDS = 10;
+
+const createHash = (password) => {
+  const hash = bcrypt.hashSync(password, SALT_ROUNDS);
+  return hash;
+};
+
+const verifyLogin = (room, name, password) => {
   const newMembers = room.members.map((item) => item["name"]);
 
   if (newMembers.includes(name)) {
@@ -14,4 +21,4 @@ const auth = (room, name, password) => {
   return true;
 };
 
-export { auth };
+export { verifyLogin, createHash };

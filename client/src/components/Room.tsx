@@ -2,7 +2,7 @@
 import { useCusNavigate } from "../hooks/useCusNavigate";
 import { createRoom, joinRoom } from "../utils/socket.js";
 
-type AppProps = {
+type RoomProps = {
   socket: null;
   name: string;
   setName: (name: string) => void;
@@ -20,7 +20,7 @@ const Room = ({
   setPassword,
   room,
   setRoom,
-}: AppProps) => {
+}: RoomProps) => {
   const navigate = useCusNavigate();
 
   const handleCreateRoom = () => {

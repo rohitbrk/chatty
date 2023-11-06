@@ -1,4 +1,8 @@
 // @ts-nocheck
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
 const createRoom = (socket, name: string, password: string, room: string) => {
   if (name.includes(" ")) {
     window.alert("Please don't use spaces in the name");
@@ -51,22 +55,25 @@ const sendMsg = (
 };
 
 const getMembers = async (URL, room, setMembers) => {
-  console.log(URL + `room/${room}`);
-  const response = await fetch(URL + `room/${room}`);
+  const response = await fetch(URL + `room/${room}`, {
+    method: "GET",
+    headers: { authorization: `Bearer ${cookies.get("chatty_jwt")}` },
+  });
   const data = await response.json();
-  setMembers(data.members);
+  if (data.status === "ok") return setMembers(data.members);
+  setMembers([data.message]);
 };
 
-const populateMsgs = (data, setMsgs, setMembers, URL) => {
+const populateMsgs = (data, setMsgs) => {
   if (data.status === "ok") {
     setMsgs(data.msgs);
-    setMembers(data.members);
+    cookies.set("chatty_jwt", data.token);
     return;
   }
   setMsgs([data.status]);
 };
 
-const handleMsgs = (data, setMsgs, members, setMembers) => {
+const handleMsgs = (data, setMsgs) => {
   setMsgs((prev) => [...prev, `${data.name}: ${data.msg}`]);
 };
 
@@ -81,11 +88,11 @@ const deleteRoom = async (
   setRoom
 ) => {
   const response = await fetch(URL + `room`, {
-    method: "POST",
+    method: "DELETE",
     headers: {
       "Content-Type": "application/json",
+      authorization: `Bearer ${cookies.get("chatty_jwt")}`,
     },
-    body: JSON.stringify({ name, password, room }),
   });
   const data = await response.json();
   if (data.status === "ok") {
@@ -93,10 +100,12 @@ const deleteRoom = async (
     setName("");
     setPassword("");
     setRoom("");
+    cookies.remove("chatty_jwt");
   }
 };
 
 export {
+  cookies,
   createRoom,
   joinRoom,
   sendMsg,

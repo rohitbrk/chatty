@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCusNavigate } from "../hooks/useCusNavigate";
+import { cookies } from "../utils/socket.ts";
 
 type ProfileProps = {
   name: string;
@@ -39,6 +40,7 @@ const Profile = ({
     {
       name: "Logout",
       onClick: () => {
+        cookies.remove("chatty_jwt");
         navigate("/");
         window.location.reload();
       },

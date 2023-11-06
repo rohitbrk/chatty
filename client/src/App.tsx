@@ -33,12 +33,8 @@ const App = () => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on("found-room", (data) =>
-      populateMsgs(data, setMsgs, setMembers, URL)
-    );
-    socket.on("receive-msg", (data) =>
-      handleMsgs(data, setMsgs, members, setMembers)
-    );
+    socket.on("found-room", (data) => populateMsgs(data, setMsgs));
+    socket.on("receive-msg", (data) => handleMsgs(data, setMsgs));
   }, [socket]);
 
   return (

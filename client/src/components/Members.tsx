@@ -15,12 +15,7 @@ const Members = ({ members, URL, room, setMembers }: MembersProps) => {
       <div className="flex justify-between font-semibold">
         Members
         {showMembers ? (
-          <button
-            onClick={() => {
-              setShowMembers((prev) => !prev);
-              getMembers(URL, room, setMembers);
-            }}
-          >
+          <button onClick={() => setShowMembers((prev) => !prev)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -35,7 +30,12 @@ const Members = ({ members, URL, room, setMembers }: MembersProps) => {
             </svg>
           </button>
         ) : (
-          <button onClick={() => setShowMembers((prev) => !prev)}>
+          <button
+            onClick={() => {
+              setShowMembers((prev) => !prev);
+              getMembers(URL, room, setMembers);
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
