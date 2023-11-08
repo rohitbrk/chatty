@@ -8,8 +8,11 @@ const reducer = (state, action) => {
     case "SET_DATA":
       return { data: action.payload.data, type: action.payload.type };
 
-    case "RESET":
-      return {};
+    case "TEXT_RESET":
+      return { data: "" };
+
+    case "FILE_RESET":
+      return { data: null };
   }
 };
 

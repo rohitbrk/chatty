@@ -2,6 +2,7 @@
 import Cookies from "universal-cookie";
 import { msgsDispatch } from "../context/MsgsContext";
 import { userInfoDispatch } from "../context/UserInfoContext";
+import { dataDispatch } from "../context/DataContext";
 
 const cookies = new Cookies();
 const URL = import.meta.env.VITE_BACKEND_URL;
@@ -34,28 +35,20 @@ const joinRoom = (socket, userInfo) => {
   return true;
 };
 
-const sendMsg = (
-  socket,
-  name: string,
-  room: string,
-  msg: string,
-  file,
-  setMsg,
-  setFile
-) => {
-  if (msg) {
-    socket.emit("send-msg", { name, room, msg });
-    msgsDispatch({ type: "ADD_MSG", payload: { name, msg } });
-    setMsg("");
+const sendMsg = (socket, name: string, room: string, data) => {
+  if (data.type === "text") {
+    socket.emit("send-msg", { name, room, msg: data.data });
+    msgsDispatch({ type: "ADD_MSG", payload: { name, msg: data.data } });
+    dataDispatch({ type: "TEXT_RESET" });
     return;
   }
   const reader = new FileReader();
-  reader.readAsDataURL(file);
+  reader.readAsDataURL(data.data);
   reader.onload = () => {
     socket.emit("send-msg", { msg: reader.result, room, name, type: "file" });
     msgsDispatch({ type: "ADD_MSG", payload: { name, msg: reader.result } });
   };
-  setFile(null);
+  dataDispatch({ type: "FILE_RESET" });
 };
 
 const getMembers = async (room, setMembers) => {

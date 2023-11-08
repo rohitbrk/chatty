@@ -11,13 +11,12 @@ import { populateMsgs, handleMsgs } from "./utils/socket.js";
 import Profile from "./components/Profile";
 import MsgsProvider from "./context/MsgsContext.js";
 import { UserInfoContext } from "./context/UserInfoContext.js";
+import DataProvider from "./context/DataContext.js";
 
 const App = () => {
   const URL = import.meta.env.VITE_BACKEND_URL;
   const { name, password, room } = useContext(UserInfoContext);
 
-  const [msg, setMsg] = useState("");
-  const [file, setFile] = useState(null);
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -41,13 +40,9 @@ const App = () => {
               <MsgsProvider>
                 <Profile />
                 <Msgs />
-                <Chat
-                  socket={socket}
-                  msg={msg}
-                  setMsg={setMsg}
-                  file={file}
-                  setFile={setFile}
-                />
+                <DataProvider>
+                  <Chat socket={socket} />
+                </DataProvider>
                 <Members />
               </MsgsProvider>
             }
