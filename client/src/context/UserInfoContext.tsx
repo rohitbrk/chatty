@@ -17,7 +17,7 @@ let userInfo;
 let userInfoDispatch;
 
 const UserInfoProvider = ({ children }) => {
-  [userInfo, userInfoDispatch] = useReducer(reducer, []);
+  [userInfo, userInfoDispatch] = useReducer(reducer, {});
 
   return (
     <UserInfoContext.Provider value={userInfo}>

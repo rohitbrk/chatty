@@ -1,10 +1,9 @@
 // @ts-nocheck
-import Cookies from "universal-cookie";
 import { msgsDispatch } from "../context/MsgsContext";
 import { userInfoDispatch } from "../context/UserInfoContext";
 import { dataDispatch } from "../context/DataContext";
+import { cookies } from "../App";
 
-const cookies = new Cookies();
 const URL = import.meta.env.VITE_BACKEND_URL;
 
 const createRoom = (socket, userInfo) => {
@@ -36,14 +35,14 @@ const joinRoom = (socket, userInfo) => {
 };
 
 const sendMsg = (socket, name: string, room: string, data) => {
-  if (data.type === "text") {
-    socket.emit("send-msg", { name, room, msg: data.data });
-    msgsDispatch({ type: "ADD_MSG", payload: { name, msg: data.data } });
+  if (data.text) {
+    socket.emit("send-msg", { name, room, msg: data.text });
+    msgsDispatch({ type: "ADD_MSG", payload: { name, msg: data.text } });
     dataDispatch({ type: "TEXT_RESET" });
     return;
   }
   const reader = new FileReader();
-  reader.readAsDataURL(data.data);
+  reader.readAsDataURL(data.file);
   reader.onload = () => {
     socket.emit("send-msg", { msg: reader.result, room, name, type: "file" });
     msgsDispatch({ type: "ADD_MSG", payload: { name, msg: reader.result } });
@@ -94,7 +93,6 @@ const deleteRoom = async () => {
 };
 
 export {
-  cookies,
   createRoom,
   joinRoom,
   sendMsg,

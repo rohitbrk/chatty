@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import Cookies from "universal-cookie";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./Layout";
 import Room from "./components/Room";
@@ -13,14 +14,14 @@ import MsgsProvider from "./context/MsgsContext.js";
 import { UserInfoContext } from "./context/UserInfoContext.js";
 import DataProvider from "./context/DataContext.js";
 
-const App = () => {
-  const URL = import.meta.env.VITE_BACKEND_URL;
-  const { name, password, room } = useContext(UserInfoContext);
+const cookies = new Cookies();
 
+const App = () => {
+  const { name, password, room } = useContext(UserInfoContext);
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    setSocket(io(URL));
+    setSocket(io(import.meta.env.VITE_BACKEND_URL));
   }, []);
 
   useEffect(() => {
@@ -55,3 +56,4 @@ const App = () => {
 };
 
 export default App;
+export { cookies };

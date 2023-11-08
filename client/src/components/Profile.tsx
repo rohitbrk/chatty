@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { useContext, useState } from "react";
 import { useCusNavigate } from "../hooks/useCusNavigate";
-import { cookies } from "../utils/socket.ts";
 import { UserInfoContext } from "../context/UserInfoContext.tsx";
 import { deleteRoom } from "../utils/socket.js";
+import { cookies } from "../App.tsx";
 
 const Profile = () => {
   const { name, room } = useContext(UserInfoContext);
