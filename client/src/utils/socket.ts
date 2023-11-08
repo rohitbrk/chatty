@@ -1,9 +1,13 @@
 // @ts-nocheck
 import Cookies from "universal-cookie";
+import { msgsDispatch } from "../context/MsgsContext";
+import { userInfoDispatch } from "../context/UserInfoContext";
 
 const cookies = new Cookies();
+const URL = import.meta.env.VITE_BACKEND_URL;
 
-const createRoom = (socket, name: string, password: string, room: string) => {
+const createRoom = (socket, userInfo) => {
+  const { name, password, room } = userInfo;
   if (name.includes(" ")) {
     window.alert("Please don't use spaces in the name");
     return false;
@@ -16,7 +20,8 @@ const createRoom = (socket, name: string, password: string, room: string) => {
   return true;
 };
 
-const joinRoom = (socket, name: string, password: string, room: string) => {
+const joinRoom = (socket, userInfo) => {
+  const { name, password, room } = userInfo;
   if (name.includes(" ")) {
     window.alert("Please don't use spaces in the name");
     return false;
@@ -31,17 +36,16 @@ const joinRoom = (socket, name: string, password: string, room: string) => {
 
 const sendMsg = (
   socket,
-  file,
   name: string,
   room: string,
   msg: string,
-  setMsgs,
+  file,
   setMsg,
   setFile
 ) => {
   if (msg) {
     socket.emit("send-msg", { name, room, msg });
-    setMsgs((prev) => [...prev, `${name}: ${msg}`]);
+    msgsDispatch({ type: "ADD_MSG", payload: { name, msg } });
     setMsg("");
     return;
   }
@@ -49,12 +53,12 @@ const sendMsg = (
   reader.readAsDataURL(file);
   reader.onload = () => {
     socket.emit("send-msg", { msg: reader.result, room, name, type: "file" });
-    setMsgs((prev) => [...prev, `${name}: ${reader.result}`]);
+    msgsDispatch({ type: "ADD_MSG", payload: { name, msg: reader.result } });
   };
-  setFile((prev) => null);
+  setFile(null);
 };
 
-const getMembers = async (URL, room, setMembers) => {
+const getMembers = async (room, setMembers) => {
   const response = await fetch(URL + `room/${room}`, {
     method: "GET",
     headers: { authorization: `Bearer ${cookies.get("chatty_jwt")}` },
@@ -64,42 +68,34 @@ const getMembers = async (URL, room, setMembers) => {
   setMembers([data.message]);
 };
 
-const populateMsgs = (data, setMsgs) => {
+const populateMsgs = (data) => {
   if (data.status === "ok") {
-    setMsgs(data.msgs);
+    msgsDispatch({ type: "SET_MSGS", payload: data.msgs });
     cookies.set("chatty_jwt", data.token);
     return;
   }
-  setMsgs([data.status]);
+  msgsDispatch({ type: "SET_MSGS", payload: [data.status] });
 };
 
-const handleMsgs = (data, setMsgs) => {
-  setMsgs((prev) => [...prev, `${data.name}: ${data.msg}`]);
+const handleMsgs = (data) => {
+  msgsDispatch({
+    type: "ADD_MSG",
+    payload: { name: data.name, msg: data.msg },
+  });
 };
 
-const deleteRoom = async (
-  name: string,
-  password: string,
-  room: string,
-  URL: string,
-  setMsgs,
-  setName,
-  setPassword,
-  setRoom
-) => {
-  const response = await fetch(URL + `room`, {
+const deleteRoom = async () => {
+  const response = await fetch(URL + "room", {
     method: "DELETE",
     headers: {
-      "Content-Type": "application/json",
       authorization: `Bearer ${cookies.get("chatty_jwt")}`,
     },
   });
   const data = await response.json();
+
   if (data.status === "ok") {
-    setMsgs([]);
-    setName("");
-    setPassword("");
-    setRoom("");
+    msgsDispatch({ type: "RESET" });
+    userInfoDispatch({ type: "RESET" });
     cookies.remove("chatty_jwt");
   }
 };

@@ -2,6 +2,12 @@ import { createToken } from "../middleware/jwt.js";
 import { createHash, verifyLogin } from "../middleware/auth.js";
 import Room from "../models/chat.model.js";
 
+// const deleteMany = async () => {
+//   const data = await Room.deleteMany({});
+// };
+
+// deleteMany();
+
 const findRoomMembers = async (req, res) => {
   try {
     const foundRoom = await Room.findOne({ room: req.user.room })
@@ -19,7 +25,7 @@ const deleteRoom = async (req, res) => {
     const { room } = req.user;
     const response = await Room.findOneAndDelete({ room: room });
     if (response) return res.status(200).json({ status: "ok" });
-    res.status(401).json({ status: "error" });
+    res.status(400).json({ status: "error" });
   } catch (err) {
     res.status(500).json({ status: "error", message: "Error retrieving data" });
   }

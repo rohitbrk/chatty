@@ -1,9 +1,10 @@
-type MsgsProps = {
-  name: string;
-  msgs: string[];
-};
+import { useContext } from "react";
+import { MsgsContext } from "../context/MsgsContext";
+import { UserInfoContext } from "../context/UserInfoContext";
 
-const Msgs = ({ name, msgs }: MsgsProps) => {
+const Msgs = () => {
+  const { name } = useContext(UserInfoContext);
+  const msgs = useContext(MsgsContext);
   return (
     <div className="flex flex-col flex-grow h-72 overflow-auto w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
       <div className="font-semibold pb-4">Messages</div>
@@ -14,7 +15,7 @@ const Msgs = ({ name, msgs }: MsgsProps) => {
         let flag = false;
         if (name === myArray[0].slice(0, -1)) flag = true;
 
-        if (item.includes("data:image/png;base64")) {
+        if (item.includes("data:image/")) {
           return (
             <div key={index} className="mb-1">
               {flag ? (
@@ -35,7 +36,7 @@ const Msgs = ({ name, msgs }: MsgsProps) => {
             </div>
           );
         }
-        if (item.includes("data:video/mp4;base64")) {
+        if (item.includes("data:video/")) {
           return (
             <div key={index} className="mb-1">
               {flag ? (

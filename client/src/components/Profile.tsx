@@ -1,39 +1,12 @@
-import { useState } from "react";
+// @ts-nocheck
+import { useContext, useState } from "react";
 import { useCusNavigate } from "../hooks/useCusNavigate";
 import { cookies } from "../utils/socket.ts";
+import { UserInfoContext } from "../context/UserInfoContext.tsx";
+import { deleteRoom } from "../utils/socket.js";
 
-type ProfileProps = {
-  name: string;
-  password: string;
-  room: string;
-  URL: string;
-  setMsgs: (msgs: string[]) => void;
-  setName: (name: string) => void;
-  setPassword: (password: string) => void;
-  setRoom: (room: string) => void;
-  deleteRoom: (
-    name: string,
-    password: string,
-    room: string,
-    URL: string,
-    setMsgs: (msgs: string[]) => void,
-    setName: (name: string) => void,
-    setPassword: (password: string) => void,
-    setRoom: (room: string) => void
-  ) => void;
-};
-
-const Profile = ({
-  name,
-  password,
-  room,
-  URL,
-  setMsgs,
-  deleteRoom,
-  setName,
-  setPassword,
-  setRoom,
-}: ProfileProps) => {
+const Profile = () => {
+  const { name, room } = useContext(UserInfoContext);
   const navigate = useCusNavigate();
   const [dropdown, setDropdown] = useState(false);
   const dropdownElements = [
@@ -48,16 +21,7 @@ const Profile = ({
     {
       name: "Delete Room",
       onClick: () => {
-        deleteRoom(
-          name,
-          password,
-          room,
-          URL,
-          setMsgs,
-          setName,
-          setPassword,
-          setRoom
-        );
+        deleteRoom();
         navigate("/");
       },
     },

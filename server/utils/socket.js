@@ -14,12 +14,12 @@ const joinRoom = async (socket, data) => {
 };
 
 const sendMsg = (socket, data) => {
-  if (data.type === "file")
+  if (data.type === "file") {
     socket.to(data.room).emit("receive-msg", {
       name: data.name,
       msg: data.msg.toString("base64"),
     });
-  else
+  } else
     socket
       .to(data.room)
       .emit("receive-msg", { name: data.name, msg: data.msg });

@@ -21,6 +21,8 @@ app.get("/", (req, res) => {
 app.use("/room", room);
 
 const io = new Server(httpServer, {
+  maxHttpBufferSize: 1e8,
+  pingTimeout: 60000,
   cors: {
     origin: "*",
   },

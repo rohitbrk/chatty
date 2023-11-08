@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { getMembers } from "../utils/socket";
+import { useContext } from "react";
+import { UserInfoContext } from "../context/UserInfoContext";
 
-type MembersProps = {
-  members: String[];
-  URL: string;
-  room: string;
-  setMembers: string[];
-};
-
-const Members = ({ members, URL, room, setMembers }: MembersProps) => {
+const Members = () => {
+  const { room } = useContext(UserInfoContext);
+  const [members, setMembers] = useState([]);
   const [showMembers, setShowMembers] = useState(false);
+
   return (
     <div className="flex flex-col w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
       <div className="flex justify-between font-semibold">
@@ -33,7 +31,7 @@ const Members = ({ members, URL, room, setMembers }: MembersProps) => {
           <button
             onClick={() => {
               setShowMembers((prev) => !prev);
-              getMembers(URL, room, setMembers);
+              getMembers(room, setMembers);
             }}
           >
             <svg

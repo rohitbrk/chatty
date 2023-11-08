@@ -1,36 +1,29 @@
 // @ts-nocheck
+import { useContext } from "react";
 import { useCusNavigate } from "../hooks/useCusNavigate";
 import { createRoom, joinRoom } from "../utils/socket.js";
+import {
+  UserInfoContext,
+  UserInfoDispatchContext,
+} from "../context/UserInfoContext.tsx";
 
 type RoomProps = {
   socket: null;
-  name: string;
-  setName: (name: string) => void;
-  password: string;
-  setPassword: (password: string) => void;
-  room: string;
-  setRoom: (room: string) => void;
 };
 
-const Room = ({
-  socket,
-  name,
-  setName,
-  password,
-  setPassword,
-  room,
-  setRoom,
-}: RoomProps) => {
+const Room = ({ socket }: RoomProps) => {
+  const userInfoDispatch = useContext(UserInfoDispatchContext);
+  const userInfo = useContext(UserInfoContext);
   const navigate = useCusNavigate();
 
   const handleCreateRoom = () => {
-    const response: boolean = createRoom(socket, name, password, room);
+    const response: boolean = createRoom(socket, userInfo);
     if (!response) return;
     navigate("/chat");
   };
 
   const handleJoinRoom = () => {
-    const response: boolean = joinRoom(socket, name, password, room);
+    const response: boolean = joinRoom(socket, userInfo);
     if (!response) return;
     navigate("/chat");
   };
@@ -39,25 +32,40 @@ const Room = ({
     <div className="w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
       <input
         type="text"
-        value={name}
+        name="name"
         placeholder="Enter Name (Please don't use spaces)"
-        onChange={(e) => setName(e.target.value)}
+        onChange={(e) =>
+          userInfoDispatch({
+            type: "SET_VAL",
+            payload: { name: e.target.name, value: e.target.value },
+          })
+        }
         className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <br />
       <input
         type="password"
-        value={password}
+        name="password"
         placeholder="Enter Password"
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) =>
+          userInfoDispatch({
+            type: "SET_VAL",
+            payload: { name: e.target.name, value: e.target.value },
+          })
+        }
         className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <br />
       <input
         type="text"
         placeholder="Enter Room name"
-        value={room}
-        onChange={(e) => setRoom(e.target.value)}
+        name="room"
+        onChange={(e) =>
+          userInfoDispatch({
+            type: "SET_VAL",
+            payload: { name: e.target.name, value: e.target.value },
+          })
+        }
         className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />
       <br />
