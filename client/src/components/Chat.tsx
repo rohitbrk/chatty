@@ -30,7 +30,7 @@ const Chat = ({ socket }: ChatProps) => {
       <input
         type="file"
         name="file"
-        accept="image/png,video/mp4"
+        accept="image/png, image/jpeg, video/*"
         onChange={(e) =>
           dataDispatch({
             type: "SET_FILE",

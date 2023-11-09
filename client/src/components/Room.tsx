@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useContext } from "react";
 import { useCusNavigate } from "../hooks/useCusNavigate";
 import { createRoom, joinRoom } from "../utils/socket.js";
@@ -7,11 +6,7 @@ import {
   UserInfoDispatchContext,
 } from "../context/UserInfoContext.tsx";
 
-type RoomProps = {
-  socket: null;
-};
-
-const Room = ({ socket }: RoomProps) => {
+const Room = ({ socket }) => {
   const userInfoDispatch = useContext(UserInfoDispatchContext);
   const userInfo = useContext(UserInfoContext);
   const navigate = useCusNavigate();
@@ -28,47 +23,47 @@ const Room = ({ socket }: RoomProps) => {
     navigate("/chat");
   };
 
+  const onChange = (e) =>
+    userInfoDispatch({
+      type: "SET_VAL",
+      payload: { name: e.target.name, value: e.target.value },
+    });
+
+  const form = [
+    {
+      type: "text",
+      name: "name",
+      placeholder: "Enter Name (Please don't use spaces)",
+      onChange: onChange,
+    },
+    {
+      type: "password",
+      name: "password",
+      placeholder: "Enter Password",
+      onChange: onChange,
+    },
+    {
+      type: "text",
+      name: "room",
+      placeholder: "Enter Room Name",
+      onChange: onChange,
+    },
+  ];
+
   return (
     <div className="w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
-      <input
-        type="text"
-        name="name"
-        placeholder="Enter Name (Please don't use spaces)"
-        onChange={(e) =>
-          userInfoDispatch({
-            type: "SET_VAL",
-            payload: { name: e.target.name, value: e.target.value },
-          })
-        }
-        className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
-      <br />
-      <input
-        type="password"
-        name="password"
-        placeholder="Enter Password"
-        onChange={(e) =>
-          userInfoDispatch({
-            type: "SET_VAL",
-            payload: { name: e.target.name, value: e.target.value },
-          })
-        }
-        className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
-      <br />
-      <input
-        type="text"
-        placeholder="Enter Room name"
-        name="room"
-        onChange={(e) =>
-          userInfoDispatch({
-            type: "SET_VAL",
-            payload: { name: e.target.name, value: e.target.value },
-          })
-        }
-        className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-      />
-      <br />
+      {form.map((item) => (
+        <div key={item.name}>
+          <input
+            type={item.type}
+            name={item.name}
+            placeholder={item.placeholder}
+            onChange={item.onChange}
+            className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <br />
+        </div>
+      ))}
       <div className="flex justify-evenly">
         <button
           onClick={handleCreateRoom}

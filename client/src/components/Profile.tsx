@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useContext, useState } from "react";
 import { useCusNavigate } from "../hooks/useCusNavigate";
 import { UserInfoContext } from "../context/UserInfoContext.tsx";

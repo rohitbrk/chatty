@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { msgsDispatch } from "../context/MsgsContext";
 import { userInfoDispatch } from "../context/UserInfoContext";
 import { dataDispatch } from "../context/DataContext";

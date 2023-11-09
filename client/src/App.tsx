@@ -1,5 +1,4 @@
-// @ts-nocheck
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Cookies from "universal-cookie";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -11,13 +10,11 @@ import Members from "./components/Members";
 import { populateMsgs, handleMsgs } from "./utils/socket.js";
 import Profile from "./components/Profile";
 import MsgsProvider from "./context/MsgsContext.js";
-import { UserInfoContext } from "./context/UserInfoContext.js";
 import DataProvider from "./context/DataContext.js";
 
 const cookies = new Cookies();
 
 const App = () => {
-  const { name, password, room } = useContext(UserInfoContext);
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
