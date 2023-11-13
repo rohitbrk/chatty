@@ -6,9 +6,7 @@ import Layout from "./Layout";
 import Room from "./components/Room";
 import Chat from "./components/Chat";
 import Msgs from "./components/Msgs";
-import Members from "./components/Members";
 import { populateMsgs, handleMsgs } from "./utils/socket.js";
-import Profile from "./components/Profile";
 import MsgsProvider from "./context/MsgsContext.js";
 import DataProvider from "./context/DataContext.js";
 
@@ -36,12 +34,10 @@ const App = () => {
             path="chat"
             element={
               <MsgsProvider>
-                <Profile />
                 <Msgs />
                 <DataProvider>
                   <Chat socket={socket} />
                 </DataProvider>
-                <Members />
               </MsgsProvider>
             }
           />

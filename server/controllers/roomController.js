@@ -49,6 +49,7 @@ const createRoomDb = async (data) => {
     room.save();
 
     const token = createToken(data.name, data.room);
+    if (!token) return { status: "error" };
     return {
       room: room.room,
       msgs: room.msgs,
@@ -69,6 +70,7 @@ const joinRoomDb = async (data) => {
     if (!isVerified) return { status: "invalid credentials" };
 
     const token = createToken(data.name, data.room);
+    if (!token) return { status: "error" };
     const hash = createHash(data.password);
 
     const members = foundRoom.members.map((item) => item["name"]);

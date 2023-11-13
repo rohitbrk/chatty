@@ -51,7 +51,7 @@ const Room = ({ socket }) => {
   ];
 
   return (
-    <div className="w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
+    <div className="md:w-full sm:w-screen bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
       {form.map((item) => (
         <div key={item.name}>
           <input

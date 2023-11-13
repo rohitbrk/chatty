@@ -1,19 +1,15 @@
 import { useState } from "react";
-import { getMembers } from "../utils/socket";
-import { useContext } from "react";
-import { UserInfoContext } from "../context/UserInfoContext";
 
-const Members = () => {
-  const { room } = useContext(UserInfoContext);
-  const [members, setMembers] = useState([]);
-  const [showMembers, setShowMembers] = useState(false);
+const Resources = () => {
+  const resources = ["1", "2"];
+  const [showResources, setShowResources] = useState(false);
 
   return (
-    <div className="flex flex-col w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
+    <div className="w-full h-auto mt-[150px] mx-4 border rounded bg-white p-2 mb-2 hover:shadow-lg duration-300">
       <div className="flex justify-between font-semibold">
-        Members
-        {showMembers ? (
-          <button onClick={() => setShowMembers((prev) => !prev)}>
+        Resources
+        {showResources ? (
+          <button onClick={() => setShowResources((prev) => !prev)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -28,12 +24,7 @@ const Members = () => {
             </svg>
           </button>
         ) : (
-          <button
-            onClick={() => {
-              setShowMembers((prev) => !prev);
-              getMembers(room, setMembers);
-            }}
-          >
+          <button onClick={() => setShowResources((prev) => !prev)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -50,19 +41,23 @@ const Members = () => {
         )}
       </div>
       <>
-        {showMembers
-          ? members.map((item) => (
+        {showResources ? (
+          <ul className="flex flex-col">
+            {resources.map((item) => (
               <li
                 key={item}
-                className="text-4xl font-medium leading-tight inline-block whitespace-nowrap rounded-1 bg-primary-100 text-center align-baseline font-bold leading-none text-primary-700"
+                className="block text-4xl font-medium leading-tight inline-block whitespace-nowrap rounded-1 bg-primary-100 text-center align-baseline font-bold leading-none text-primary-700"
               >
                 {item}
               </li>
-            ))
-          : ""}
+            ))}
+          </ul>
+        ) : (
+          ""
+        )}
       </>
     </div>
   );
 };
 
-export default Members;
+export default Resources;

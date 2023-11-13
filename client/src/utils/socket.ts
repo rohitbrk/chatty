@@ -49,14 +49,17 @@ const sendMsg = (socket, name: string, room: string, data) => {
   dataDispatch({ type: "FILE_RESET" });
 };
 
-const getMembers = async (room, setMembers) => {
-  const response = await fetch(URL + `room/${room}`, {
-    method: "GET",
-    headers: { authorization: `Bearer ${cookies.get("chatty_jwt")}` },
-  });
-  const data = await response.json();
-  if (data.status === "ok") return setMembers(data.members);
-  setMembers([data.message]);
+const getMembers = async (room) => {
+  try {
+    const response = await fetch(URL + `room/${room}`, {
+      method: "GET",
+      headers: { authorization: `Bearer ${cookies.get("chatty_jwt")}` },
+    });
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.log(err.message);
+  }
 };
 
 const populateMsgs = (data) => {

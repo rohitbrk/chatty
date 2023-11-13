@@ -3,17 +3,13 @@ import { UserInfoContext } from "../context/UserInfoContext";
 import { sendMsg } from "../utils/socket";
 import { DataContext, DataDispatchContext } from "../context/DataContext";
 
-type ChatProps = {
-  socket: null;
-};
-
-const Chat = ({ socket }: ChatProps) => {
+const Chat = ({ socket }) => {
   const data = useContext(DataContext);
   const dataDispatch = useContext(DataDispatchContext);
   const { name, room } = useContext(UserInfoContext);
 
   return (
-    <div className="w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
+    <div className="fixed bottom-0 w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 hover:shadow-lg hover:shadow-black/30">
       <input
         type="text"
         name="text"

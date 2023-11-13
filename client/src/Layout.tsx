@@ -4,10 +4,10 @@ import Footer from "./components/Footer";
 
 const Layout = () => {
   return (
-    <div className="m-14 flex flex-col gap-2 items-center justify-center">
+    <div className="mt-1 m-14 flex flex-col gap-2 items-center justify-center">
       <Nav />
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
