@@ -1,5 +1,5 @@
-import { createRoomDb, joinRoomDb } from "../controllers/roomController.js";
-import { updateMsgs } from "../controllers/msgController.js";
+import { createRoomDb, joinRoomDb } from "../controllers/room.controller.js";
+import { updateMsgs } from "../controllers/msg.controller.js";
 
 const createRoom = async (socket, data) => {
   socket.join(data.room);

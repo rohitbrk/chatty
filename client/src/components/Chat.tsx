@@ -9,7 +9,7 @@ const Chat = ({ socket }) => {
   const { name, room } = useContext(UserInfoContext);
 
   return (
-    <div className="fixed bottom-0 w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-8 hover:shadow-lg hover:shadow-black/30">
+    <div className="fixed bottom-0 w-full max-w-md bg-white shadow-md rounded px-8 pt-6 pb-4 hover:shadow-lg hover:shadow-black/30">
       <input
         type="text"
         name="text"

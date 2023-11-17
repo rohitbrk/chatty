@@ -3,7 +3,7 @@ import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import { connectDb } from "./config/db.js";
-import { router as room } from "./routes/room.js";
+import { router as room } from "./routes/room.route.js";
 import { createRoom, joinRoom, sendMsg } from "./utils/socket.js";
 
 const PORT = 8080;

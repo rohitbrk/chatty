@@ -12,7 +12,7 @@ import DataProvider from "./context/DataContext.js";
 
 const cookies = new Cookies();
 
-const App = () => {
+const App = ({ setErr }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const App = () => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on("found-room", (data) => populateMsgs(data));
+    socket.on("found-room", (data) => populateMsgs(data, setErr));
     socket.on("receive-msg", (data) => handleMsgs(data));
   }, [socket]);
 

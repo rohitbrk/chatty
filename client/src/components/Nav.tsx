@@ -8,11 +8,11 @@ const Nav = () => {
     textDecoration: "underline",
     textUnderlineOffset: "4px",
   };
-
   const [path, setPath] = useState("/");
+
   return (
     <>
-      <div className="w-full flex justify-between list-none">
+      <div className="px-6 w-full flex justify-between list-none border rounded bg-white p-2 mb-2 hover:shadow-lg duration-300">
         <div className="justify-start">
           <li>
             <NavLink to="/" className="flex">
@@ -39,7 +39,7 @@ const Nav = () => {
             <NavLink
               to="/chat"
               style={({ isActive }) => {
-                setPath(window.location.href);
+                setPath(window.location.pathname);
                 return isActive ? activeStyles : {};
               }}
             >
@@ -47,7 +47,7 @@ const Nav = () => {
             </NavLink>
           </li>
           <li className="text-blue-400 hover:text-blue-800">
-            {window.location.pathname === "/" ? <></> : <Profile />}
+            {path === "/" ? <></> : <Profile />}
           </li>
         </div>
       </div>

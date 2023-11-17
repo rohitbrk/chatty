@@ -3,6 +3,7 @@ import { useCusNavigate } from "../hooks/useCusNavigate";
 import { UserInfoContext } from "../context/UserInfoContext.tsx";
 import { deleteRoom, getMembers } from "../utils/socket.js";
 import { cookies } from "../App.tsx";
+import svgs from "../utils/svgs.tsx";
 
 const Profile = () => {
   const { name, room } = useContext(UserInfoContext);
@@ -29,22 +30,12 @@ const Profile = () => {
     {
       name: (
         <div className="flex">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              fillRule="evenodd"
-              d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
-              clipRule="evenodd"
-            />
-          </svg>
+          {svgs.showMembersArrow}
           Members
         </div>
       ),
       onClick: async () => {
+        if (showMembers) return setShowMembers(false);
         const data = await getMembers(room);
         if (data.members) {
           setMembers(data.members);
@@ -68,18 +59,7 @@ const Profile = () => {
           <div className="font-semibold text-base">
             {name ? `${name} (${room})` : "No User"}
           </div>
-          <svg
-            className="h-5 w-5 text-gray-500 display-block m-auto"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            aria-hidden="true"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-              clipRule="evenodd"
-            />
-          </svg>
+          {svgs.profileDropdownArrow}
         </button>
       </div>
       {dropdown ? (

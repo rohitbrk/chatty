@@ -5,6 +5,8 @@ import {
   UserInfoContext,
   UserInfoDispatchContext,
 } from "../context/UserInfoContext.tsx";
+import InputField from "./common/InputField.tsx";
+import Button from "./common/Button.tsx";
 
 const Room = ({ socket }) => {
   const userInfoDispatch = useContext(UserInfoDispatchContext);
@@ -53,30 +55,17 @@ const Room = ({ socket }) => {
   return (
     <div className="md:w-full sm:w-screen bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hover:shadow-lg hover:shadow-black/30">
       {form.map((item) => (
-        <div key={item.name}>
-          <input
-            type={item.type}
-            name={item.name}
-            placeholder={item.placeholder}
-            onChange={item.onChange}
-            className="mb-4 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          <br />
-        </div>
+        <InputField
+          key={item.name}
+          name={item.name}
+          type={item.type}
+          placeholder={item.placeholder}
+          onChange={onChange}
+        />
       ))}
       <div className="flex justify-evenly">
-        <button
-          onClick={handleCreateRoom}
-          className="inline-flex items-center px-3 py-2 text-lg font-medium text-center text-white bg-blue-700 rounded hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-        >
-          Create
-        </button>
-        <button
-          onClick={handleJoinRoom}
-          className="inline-flex items-center px-3 py-2 text-lg font-medium text-center text-white bg-blue-700 rounded hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-        >
-          Join
-        </button>
+        <Button name="Create" onChange={handleCreateRoom} />
+        <Button name="Join" onChange={handleJoinRoom} />
       </div>
     </div>
   );

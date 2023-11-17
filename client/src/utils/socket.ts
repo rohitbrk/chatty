@@ -62,13 +62,13 @@ const getMembers = async (room) => {
   }
 };
 
-const populateMsgs = (data) => {
+const populateMsgs = (data, setErr) => {
   if (data.status === "ok") {
     msgsDispatch({ type: "SET_MSGS", payload: data.msgs });
     cookies.set("chatty_jwt", data.token);
     return;
   }
-  msgsDispatch({ type: "SET_MSGS", payload: [data.status] });
+  setErr({ error: true, msg: data.status });
 };
 
 const handleMsgs = (data) => {
@@ -79,18 +79,22 @@ const handleMsgs = (data) => {
 };
 
 const deleteRoom = async () => {
-  const response = await fetch(URL + "room", {
-    method: "DELETE",
-    headers: {
-      authorization: `Bearer ${cookies.get("chatty_jwt")}`,
-    },
-  });
-  const data = await response.json();
+  try {
+    const response = await fetch(URL + "room", {
+      method: "DELETE",
+      headers: {
+        authorization: `Bearer ${cookies.get("chatty_jwt")}`,
+      },
+    });
+    const data = await response.json();
 
-  if (data.status === "ok") {
-    msgsDispatch({ type: "RESET" });
-    userInfoDispatch({ type: "RESET" });
-    cookies.remove("chatty_jwt");
+    if (data.status === "ok") {
+      msgsDispatch({ type: "RESET" });
+      userInfoDispatch({ type: "RESET" });
+      cookies.remove("chatty_jwt");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 

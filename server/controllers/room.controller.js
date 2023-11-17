@@ -2,11 +2,16 @@ import { createToken } from "../middleware/jwt.js";
 import { createHash, verifyLogin } from "../middleware/auth.js";
 import Room from "../models/chat.model.js";
 
-// const deleteMany = async () => {
-//   const data = await Room.deleteMany({});
-// };
-
-// deleteMany();
+const getSuggestions = (req, res) => {
+  try {
+    res.status(200).json({
+      popularRooms: ["Travel", "Food", "Culture"],
+      tips: ["Use png/ jpg"],
+    });
+  } catch (err) {
+    res.status(500).json({ status: "error", message: "Error retrieving data" });
+  }
+};
 
 const findRoomMembers = async (req, res) => {
   try {
@@ -89,4 +94,10 @@ const joinRoomDb = async (data) => {
   }
 };
 
-export { createRoomDb, joinRoomDb, findRoomMembers, deleteRoom };
+export {
+  getSuggestions,
+  createRoomDb,
+  joinRoomDb,
+  findRoomMembers,
+  deleteRoom,
+};
