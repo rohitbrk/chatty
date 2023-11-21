@@ -7,7 +7,7 @@ const getSuggestions = (req, res) => {
     res.status(200).json({
       status: "ok",
       popularRooms: ["Travel", "Food", "Culture"],
-      tips: ["Use png/ jpg", "Use strong password"],
+      tips: ["Use png/ jpg", "Strong pass"],
     });
   } catch (err) {
     res.status(500).json({ status: "error", message: "Error retrieving data" });

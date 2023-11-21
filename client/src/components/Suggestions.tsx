@@ -31,7 +31,7 @@ const Suggestions = ({ name, items, svg, button }: SuggestionsProps) => {
       <>
         {showSuggestions ? (
           <ul className="flex flex-col">
-            {items.map((item) => (
+            {items?.map((item) => (
               <li
                 key={item}
                 className="px-6 mx-20 flex justify-between mb-1 block text-lg font-medium leading-tight inline-block whitespace-nowrap rounded-1 bg-primary-100 align-baseline font-bold leading-none text-gray-700"
