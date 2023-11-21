@@ -1,4 +1,10 @@
-const TextMsg = ({ index, flag, myArray, myMsgString }) => {
+type TextMsgProps = {
+  index: number;
+  flag: boolean;
+  myArray: string[];
+  myMsgString: string;
+};
+const TextMsg = ({ index, flag, myArray, myMsgString }: TextMsgProps) => {
   return (
     <div
       key={index}

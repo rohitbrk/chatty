@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
-
-const SALT_ROUNDS = 10;
+import dotenv from "dotenv";
+dotenv.config();
 
 const createHash = (password) => {
-  const hash = bcrypt.hashSync(password, SALT_ROUNDS);
+  const hash = bcrypt.hashSync(password, parseInt(process.env.SALT_ROUNDS));
   return hash;
 };
 

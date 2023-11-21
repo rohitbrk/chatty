@@ -12,7 +12,7 @@ import DataProvider from "./context/DataContext.js";
 
 const cookies = new Cookies();
 
-const App = ({ setErr }) => {
+const App = ({ setErr }: { setErr: (error: boolean, msg: string) => void }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {

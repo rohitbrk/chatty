@@ -1,6 +1,6 @@
 import svgs from "../utils/svgs";
 
-const Error = ({ msg }) => {
+const Error = ({ msg }: { msg: string }) => {
   return (
     <div className="mt-6 flex justify-center font-semibold text-xl mx-16 my-1 p-1.5 inline-block bg-gray-200 rounded-full text-gray-700">
       <p className="text-gray-500 dark:text-gray-400">

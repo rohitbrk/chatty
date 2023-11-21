@@ -1,4 +1,10 @@
-const InputField = ({ name, type, placeholder, onChange }) => {
+type InputFieldProps = {
+  name: string;
+  type: string;
+  placeholder: string;
+  onChange: () => void;
+};
+const InputField = ({ name, type, placeholder, onChange }: InputFieldProps) => {
   return (
     <div key={name}>
       <input

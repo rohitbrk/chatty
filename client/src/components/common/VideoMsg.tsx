@@ -1,4 +1,5 @@
-const VideoMsg = ({ index, flag, myArray }) => {
+type VideoMsgProps = { index: number; flag: boolean; myArray: string[] };
+const VideoMsg = ({ index, flag, myArray }: VideoMsgProps) => {
   return (
     <div key={index} className="mb-1 w-4/5">
       {flag ? (

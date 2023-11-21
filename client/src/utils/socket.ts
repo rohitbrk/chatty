@@ -5,14 +5,23 @@ import { cookies } from "../App";
 
 const URL = import.meta.env.VITE_BACKEND_URL;
 
+const populateMsgs = (data, setErr) => {
+  if (data.status === "ok") {
+    msgsDispatch({ type: "SET_MSGS", payload: data.msgs });
+    cookies.set("chatty_jwt", data.token);
+    return;
+  }
+  setErr({ error: true, msg: data.message });
+};
+
 const createRoom = (socket, userInfo) => {
   const { name, password, room } = userInfo;
-  if (name.includes(" ")) {
-    window.alert("Please don't use spaces in the name");
-    return false;
-  }
   if (!name || !password || !room) {
     window.alert("Please enter details");
+    return false;
+  }
+  if (name.includes(" ")) {
+    window.alert("Please don't use spaces in the name");
     return false;
   }
   socket.emit("create-room", { name, password, room });
@@ -21,12 +30,12 @@ const createRoom = (socket, userInfo) => {
 
 const joinRoom = (socket, userInfo) => {
   const { name, password, room } = userInfo;
-  if (name.includes(" ")) {
-    window.alert("Please don't use spaces in the name");
-    return false;
-  }
   if (!name || !password || !room) {
     window.alert("Please enter details");
+    return false;
+  }
+  if (name.includes(" ")) {
+    window.alert("Please don't use spaces in the name");
     return false;
   }
   socket.emit("join-room", { name, password, room });
@@ -62,15 +71,6 @@ const getMembers = async (room) => {
   }
 };
 
-const populateMsgs = (data, setErr) => {
-  if (data.status === "ok") {
-    msgsDispatch({ type: "SET_MSGS", payload: data.msgs });
-    cookies.set("chatty_jwt", data.token);
-    return;
-  }
-  setErr({ error: true, msg: data.status });
-};
-
 const handleMsgs = (data) => {
   msgsDispatch({
     type: "ADD_MSG",
@@ -94,7 +94,7 @@ const deleteRoom = async () => {
       cookies.remove("chatty_jwt");
     }
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 };
 

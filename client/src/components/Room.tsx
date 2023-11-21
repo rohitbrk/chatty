@@ -64,8 +64,8 @@ const Room = ({ socket }) => {
         />
       ))}
       <div className="flex justify-evenly">
-        <Button name="Create" onChange={handleCreateRoom} />
-        <Button name="Join" onChange={handleJoinRoom} />
+        <Button name="Create" onClick={handleCreateRoom} component="room" />
+        <Button name="Join" onClick={handleJoinRoom} component="room" />
       </div>
     </div>
   );

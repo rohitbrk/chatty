@@ -1,4 +1,9 @@
-const ImageMsg = ({ index, flag, myArray }) => {
+type ImageMsgProps = {
+  index: number;
+  flag: boolean;
+  myArray: string;
+};
+const ImageMsg = ({ index, flag, myArray }: ImageMsgProps) => {
   return (
     <div
       key={index}

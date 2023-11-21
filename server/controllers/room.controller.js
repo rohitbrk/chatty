@@ -5,8 +5,9 @@ import Room from "../models/chat.model.js";
 const getSuggestions = (req, res) => {
   try {
     res.status(200).json({
+      status: "ok",
       popularRooms: ["Travel", "Food", "Culture"],
-      tips: ["Use png/ jpg"],
+      tips: ["Use png/ jpg", "Use strong password"],
     });
   } catch (err) {
     res.status(500).json({ status: "error", message: "Error retrieving data" });
@@ -41,7 +42,8 @@ const createRoomDb = async (data) => {
     const foundRoom = await Room.findOne({ room: data.room }).populate().exec();
     if (foundRoom)
       return {
-        status: "room already exists",
+        status: "error",
+        message: "room already exists",
       };
 
     const hash = createHash(data.password);
@@ -69,10 +71,10 @@ const createRoomDb = async (data) => {
 const joinRoomDb = async (data) => {
   try {
     const foundRoom = await Room.findOne({ room: data.room }).populate().exec();
-    if (!foundRoom) return { status: "room not found" };
+    if (!foundRoom) return { status: "error", message: "room not found" };
 
     const isVerified = verifyLogin(foundRoom, data.name, data.password);
-    if (!isVerified) return { status: "invalid credentials" };
+    if (!isVerified) return { status: "error", message: "invalid credentials" };
 
     const token = createToken(data.name, data.room);
     if (!token) return { status: "error" };

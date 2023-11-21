@@ -4,6 +4,7 @@ import { UserInfoContext } from "../context/UserInfoContext.tsx";
 import { deleteRoom, getMembers } from "../utils/socket.js";
 import { cookies } from "../App.tsx";
 import svgs from "../utils/svgs.tsx";
+import Button from "./common/Button.tsx";
 
 const Profile = () => {
   const { name, room } = useContext(UserInfoContext);
@@ -66,13 +67,11 @@ const Profile = () => {
         <div className="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="flex flex-col items-center py-1">
             {dropdownElements.map((item) => (
-              <button
-                key={item.name}
+              <Button
+                name={item.name}
                 onClick={item.onClick}
-                className="w-32 block flex text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-2 mb-2"
-              >
-                {item.name}
-              </button>
+                component="profile"
+              />
             ))}
           </div>
         </div>

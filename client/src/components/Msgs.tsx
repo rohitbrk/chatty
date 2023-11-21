@@ -10,7 +10,6 @@ const Msgs = () => {
   const msgs = useContext(MsgsContext);
   return (
     <>
-      {" "}
       <div className="mb-2 flex flex-justify-between">
         <div className="mt-1 fixed rounded-md font-semibold">Messages</div>
       </div>
@@ -20,6 +19,8 @@ const Msgs = () => {
           const myArray = item.split(" ");
           const myMsgString = item.substring(item.indexOf(":") + 1);
           let flag = false;
+
+          // flag is true mean the msg is of the sender itself
           if (name === myArray[0].slice(0, -1)) flag = true;
 
           if (item.includes("data:image/"))
